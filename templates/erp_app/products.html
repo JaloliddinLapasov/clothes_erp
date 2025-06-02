@@ -1,0 +1,100 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Products - Clothes Shop ERP{% endblock %}
+
+{% block content %}
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <h2>Products</h2>
+    <a href="{% url 'add_product' %}" class="btn btn-primary">
+        <i class="fas fa-plus"></i>
+        Add Product
+    </a>
+</div>
+
+<div class="product-section">
+    <div class="section-header">
+        <h3 class="section-title">All Products</h3>
+        <div class="section-actions">
+            <form method="get" class="d-flex gap-2">
+                <div class="search-box">
+                    <i class="fas fa-search"></i>
+                    <input type="text" name="search" placeholder="Search products..." value="{{ search_query }}">
+                </div>
+                <button type="submit" class="btn btn-secondary">Search</button>
+            </form>
+        </div>
+    </div>
+    
+    <div class="table-responsive">
+        <table class="product-table">
+            <thead>
+                <tr>
+                    <th>Product</th>
+                    <th>Category</th>
+                    <th>Size</th>
+                    <th>Color</th>
+                    <th>Stock</th>
+                    <th>Cost Price</th>
+                    <th>Selling Price</th>
+                    <th>Profit Margin</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for product in products %}
+                <tr>
+                    <td>
+                        <div class="product-info">
+                            {% if product.image %}
+                                <img src="{{ product.image.url }}" alt="{{ product.name }}" class="product-image">
+                            {% else %}
+                                <div class="product-image" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); display: flex; align-items: center; justify-content: center; color: white; font-weight: bold;">
+                                    {{ product.name|first }}
+                                </div>
+                            {% endif %}
+                            <div class="product-details">
+                                <h6>{{ product.name }}</h6>
+                                <p>{{ product.brand }}</p>
+                            </div>
+                        </div>
+                    </td>
+                    <td>{{ product.category.name }}</td>
+                    <td>{{ product.size }}</td>
+                    <td>{{ product.color }}</td>
+                    <td>
+                        <span class="stock-badge {% if product.stock_quantity > 20 %}in-stock{% elif product.stock_quantity > 5 %}low-stock{% else %}out-of-stock{% endif %}">
+                            {{ product.stock_quantity }}
+                        </span>
+                    </td>
+                    <td>${{ product.cost_price }}</td>
+                    <td>${{ product.price }}</td>
+                    <td>
+                        <span class="{% if product.profit_margin > 50 %}text-success{% elif product.profit_margin > 20 %}text-warning{% else %}text-danger{% endif %}">
+                            {{ product.profit_margin|floatformat:1 }}%
+                        </span>
+                    </td>
+                    <td>
+                        <div class="d-flex gap-2">
+                            <button class="btn btn-sm btn-secondary">
+                                <i class="fas fa-edit"></i>
+                            </button>
+                            <button class="btn btn-sm btn-danger">
+                                <i class="fas fa-trash"></i>
+                            </button>
+                        </div>
+                    </td>
+                </tr>
+                {% empty %}
+                <tr>
+                    <td colspan="9" class="text-center py-4">
+                        <p class="text-muted">No products found.</p>
+                        <a href="{% url 'add_product' %}" class="btn btn-primary">Add Your First Product</a>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}

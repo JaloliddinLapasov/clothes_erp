@@ -1,0 +1,242 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Help - Clothes Shop ERP{% endblock %}
+
+{% block content %}
+<div class="mb-4">
+    <h2>Help & Support</h2>
+    <p class="text-muted">Find answers to common questions and get support for your clothes shop ERP system.</p>
+</div>
+
+<div class="row">
+    <div class="col-lg-8">
+        <!-- FAQ Section -->
+        <div class="product-section mb-4">
+            <div class="section-header">
+                <h3 class="section-title">Frequently Asked Questions</h3>
+            </div>
+            
+            <div class="p-4">
+                <div class="accordion" id="faqAccordion">
+                    <div class="accordion-item">
+                        <h2 class="accordion-header">
+                            <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#faq1">
+                                How do I add a new product to my inventory?
+                            </button>
+                        </h2>
+                        <div id="faq1" class="accordion-collapse collapse show" data-bs-parent="#faqAccordion">
+                            <div class="accordion-body">
+                                To add a new product, navigate to the Products page and click the "Add Product" button. Fill in all the required information including product name, category, price, and stock quantity. You can also upload an image for better product identification.
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="accordion-item">
+                        <h2 class="accordion-header">
+                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faq2">
+                                How can I track my sales and income?
+                            </button>
+                        </h2>
+                        <div id="faq2" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+                            <div class="accordion-body">
+                                The Dashboard provides an overview of your sales metrics, including total earnings, balance, and sales trends. For detailed income tracking, visit the Income page where you can view all transactions, monthly trends, and export reports.
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="accordion-item">
+                        <h2 class="accordion-header">
+                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faq3">
+                                How do I manage customer information?
+                            </button>
+                        </h2>
+                        <div id="faq3" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+                            <div class="accordion-body">
+                                Go to the Customers page to view all customer information. You can add new customers by clicking "Add Customer" and filling in their details. Use the search function to quickly find specific customers.
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="accordion-item">
+                        <h2 class="accordion-header">
+                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faq4">
+                                What should I do if I encounter technical issues?
+                            </button>
+                        </h2>
+                        <div id="faq4" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+                            <div class="accordion-body">
+                                If you experience any technical issues, try refreshing the page first. If the problem persists, contact our support team using the contact information provided in the support section below.
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="accordion-item">
+                        <h2 class="accordion-header">
+                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faq5">
+                                How can I backup my data?
+                            </button>
+                        </h2>
+                        <div id="faq5" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+                            <div class="accordion-body">
+                                Regular backups are automatically performed. You can also export your data from various sections like Income and Products. For complete data backup, contact our support team.
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- User Guide Section -->
+        <div class="product-section">
+            <div class="section-header">
+                <h3 class="section-title">Quick Start Guide</h3>
+            </div>
+            
+            <div class="p-4">
+                <div class="row">
+                    <div class="col-md-6 mb-3">
+                        <div class="card h-100">
+                            <div class="card-body">
+                                <div class="d-flex align-items-center mb-3">
+                                    <div class="metric-icon earning me-3">
+                                        <i class="fas fa-box"></i>
+                                    </div>
+                                    <h5 class="card-title mb-0">Manage Products</h5>
+                                </div>
+                                <p class="card-text">Add, edit, and organize your clothing inventory with detailed product information, pricing, and stock levels.</p>
+                                <a href="{% url 'products' %}" class="btn btn-primary btn-sm">Go to Products</a>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="col-md-6 mb-3">
+                        <div class="card h-100">
+                            <div class="card-body">
+                                <div class="d-flex align-items-center mb-3">
+                                    <div class="metric-icon balance me-3">
+                                        <i class="fas fa-users"></i>
+                                    </div>
+                                    <h5 class="card-title mb-0">Customer Management</h5>
+                                </div>
+                                <p class="card-text">Keep track of your customers' information, purchase history, and build lasting relationships.</p>
+                                <a href="{% url 'customers' %}" class="btn btn-primary btn-sm">Go to Customers</a>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="col-md-6 mb-3">
+                        <div class="card h-100">
+                            <div class="card-body">
+                                <div class="d-flex align-items-center mb-3">
+                                    <div class="metric-icon sales me-3">
+                                        <i class="fas fa-chart-line"></i>
+                                    </div>
+                                    <h5 class="card-title mb-0">Track Income</h5>
+                                </div>
+                                <p class="card-text">Monitor your business performance with detailed income tracking and financial reports.</p>
+                                <a href="{% url 'income' %}" class="btn btn-primary btn-sm">Go to Income</a>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="col-md-6 mb-3">
+                        <div class="card h-100">
+                            <div class="card-body">
+                                <div class="d-flex align-items-center mb-3">
+                                    <div class="metric-icon earning me-3" style="background: linear-gradient(135deg, #8b5cf6, #7c3aed);">
+                                        <i class="fas fa-tachometer-alt"></i>
+                                    </div>
+                                    <h5 class="card-title mb-0">Dashboard Overview</h5>
+                                </div>
+                                <p class="card-text">Get a comprehensive view of your business metrics, sales trends, and key performance indicators.</p>
+                                <a href="{% url 'dashboard' %}" class="btn btn-primary btn-sm">Go to Dashboard</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="col-lg-4">
+        <!-- Contact Support -->
+        <div class="product-section mb-4">
+            <div class="section-header">
+                <h3 class="section-title">Contact Support</h3>
+            </div>
+            
+            <div class="p-4">
+                <div class="mb-3">
+                    <div class="d-flex align-items-center mb-2">
+                        <i class="fas fa-envelope text-primary me-2"></i>
+                        <strong>Email Support</strong>
+                    </div>
+                    <p class="text-muted mb-0">support@clothesshoperp.com</p>
+                    <small class="text-muted">Response within 24 hours</small>
+                </div>
+                
+                <div class="mb-3">
+                    <div class="d-flex align-items-center mb-2">
+                        <i class="fas fa-phone text-success me-2"></i>
+                        <strong>Phone Support</strong>
+                    </div>
+                    <p class="text-muted mb-0">+1 (555) 123-4567</p>
+                    <small class="text-muted">Mon-Fri, 9 AM - 6 PM EST</small>
+                </div>
+                
+                <div class="mb-3">
+                    <div class="d-flex align-items-center mb-2">
+                        <i class="fas fa-comments text-info me-2"></i>
+                        <strong>Live Chat</strong>
+                    </div>
+                    <p class="text-muted mb-0">Available on website</p>
+                    <small class="text-muted">Mon-Fri, 9 AM - 6 PM EST</small>
+                </div>
+                
+                <button class="btn btn-primary w-100">
+                    <i class="fas fa-headset"></i>
+                    Contact Support
+                </button>
+            </div>
+        </div>
+        
+        <!-- System Information -->
+        <div class="product-section">
+            <div class="section-header">
+                <h3 class="section-title">System Information</h3>
+            </div>
+            
+            <div class="p-4">
+                <div class="mb-3">
+                    <strong>Version:</strong>
+                    <span class="text-muted">v1.0.0</span>
+                </div>
+                <div class="mb-3">
+                    <strong>Last Updated:</strong>
+                    <span class="text-muted">December 2024</span>
+                </div>
+                <div class="mb-3">
+                    <strong>Database:</strong>
+                    <span class="text-success">Connected</span>
+                </div>
+                <div class="mb-3">
+                    <strong>Backup Status:</strong>
+                    <span class="text-success">Up to date</span>
+                </div>
+                
+                <div class="mt-4">
+                    <button class="btn btn-secondary w-100 mb-2">
+                        <i class="fas fa-download"></i>
+                        Download User Manual
+                    </button>
+                    <button class="btn btn-outline-primary w-100">
+                        <i class="fas fa-external-link-alt"></i>
+                        Visit Documentation
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

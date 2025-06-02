@@ -1,0 +1,99 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Customers - Clothes Shop ERP{% endblock %}
+
+{% block content %}
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <h2>Customers</h2>
+    <a href="{% url 'add_customer' %}" class="btn btn-primary">
+        <i class="fas fa-plus"></i>
+        Add Customer
+    </a>
+</div>
+
+<div class="product-section">
+    <div class="section-header">
+        <h3 class="section-title">All Customers</h3>
+        <div class="section-actions">
+            <form method="get" class="d-flex gap-2">
+                <div class="search-box">
+                    <i class="fas fa-search"></i>
+                    <input type="text" name="search" placeholder="Search customers..." value="{{ search_query }}">
+                </div>
+                <button type="submit" class="btn btn-secondary">Search</button>
+            </form>
+        </div>
+    </div>
+    
+    <div class="table-responsive">
+        <table class="product-table">
+            <thead>
+                <tr>
+                    <th>Customer</th>
+                    <th>Email</th>
+                    <th>Phone</th>
+                    <th>City</th>
+                    <th>Gender</th>
+                    <th>Joined</th>
+                    <th>Status</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for customer in customers %}
+                <tr>
+                    <td>
+                        <div class="product-info">
+                            <div class="product-image" style="background: linear-gradient(135deg, #10b981 0%, #059669 100%); display: flex; align-items: center; justify-content: center; color: white; font-weight: bold;">
+                                {{ customer.first_name|first }}{{ customer.last_name|first }}
+                            </div>
+                            <div class="product-details">
+                                <h6>{{ customer.full_name }}</h6>
+                                <p>Customer ID: #{{ customer.id }}</p>
+                            </div>
+                        </div>
+                    </td>
+                    <td>{{ customer.email }}</td>
+                    <td>{{ customer.phone }}</td>
+                    <td>{{ customer.city }}</td>
+                    <td>
+                        <span class="badge bg-light text-dark">
+                            {% if customer.gender == 'M' %}Male
+                            {% elif customer.gender == 'F' %}Female
+                            {% else %}Other{% endif %}
+                        </span>
+                    </td>
+                    <td>{{ customer.created_at|date:"M d, Y" }}</td>
+                    <td>
+                        <span class="stock-badge {% if customer.is_active %}in-stock{% else %}out-of-stock{% endif %}">
+                            {% if customer.is_active %}Active{% else %}Inactive{% endif %}
+                        </span>
+                    </td>
+                    <td>
+                        <div class="d-flex gap-2">
+                            <button class="btn btn-sm btn-secondary" title="View Details">
+                                <i class="fas fa-eye"></i>
+                            </button>
+                            <button class="btn btn-sm btn-primary" title="Edit">
+                                <i class="fas fa-edit"></i>
+                            </button>
+                            <button class="btn btn-sm btn-danger" title="Delete">
+                                <i class="fas fa-trash"></i>
+                            </button>
+                        </div>
+                    </td>
+                </tr>
+                {% empty %}
+                <tr>
+                    <td colspan="8" class="text-center py-4">
+                        <p class="text-muted">No customers found.</p>
+                        <a href="{% url 'add_customer' %}" class="btn btn-primary">Add Your First Customer</a>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}

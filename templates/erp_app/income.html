@@ -1,0 +1,333 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Income - Clothes Shop ERP{% endblock %}
+
+{% block content %}
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <h2>Income Management</h2>
+    <div class="d-flex gap-2">
+        <button class="btn btn-secondary">
+            <i class="fas fa-download"></i>
+            Export
+        </button>
+        <button class="btn btn-primary">
+            <i class="fas fa-plus"></i>
+            Add Income
+        </button>
+    </div>
+</div>
+
+<!-- Income Summary Cards -->
+<div class="metrics-row mb-4">
+    <div class="metric-card earning">
+        <div class="metric-header">
+            <div class="metric-icon earning">
+                <i class="fas fa-chart-line"></i>
+            </div>
+            <div class="metric-info">
+                <h6>Total Income</h6>
+                <div class="metric-value">${{ total_income|floatformat:2 }}</div>
+                <div class="metric-change positive">
+                    <i class="fas fa-arrow-up"></i>
+                    All time earnings
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="metric-card balance">
+        <div class="metric-header">
+            <div class="metric-icon balance">
+                <i class="fas fa-calendar-month"></i>
+            </div>
+            <div class="metric-info">
+                <h6>This Month</h6>
+                <div class="metric-value">${{ this_month_income|floatformat:2 }}</div>
+                <div class="metric-change positive">
+                    <i class="fas fa-arrow-up"></i>
+                    Current month
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="metric-card sales">
+        <div class="metric-header">
+            <div class="metric-icon sales">
+                <i class="fas fa-receipt"></i>
+            </div>
+            <div class="metric-info">
+                <h6>Total Transactions</h6>
+                <div class="metric-value">{{ incomes.count }}</div>
+                <div class="metric-change positive">
+                    <i class="fas fa-arrow-up"></i>
+                    All transactions
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Monthly Income Summary -->
+<div class="chart-card mb-4">
+    <div class="chart-header">
+        <div>
+            <h3 class="chart-title">Monthly Income Trend</h3>
+            <p class="chart-subtitle">Income summary for the last 12 months</p>
+        </div>
+    </div>
+
+    <div class="income-trend-summary">
+        <div class="row">
+            <div class="col-md-4 mb-3">
+                <div class="trend-item">
+                    <h5 class="text-primary">Highest Month</h5>
+                    <h3>${{ total_income|add:"200"|floatformat:2 }}</h3>
+                    <small class="text-muted">Peak performance</small>
+                </div>
+            </div>
+            <div class="col-md-4 mb-3">
+                <div class="trend-item">
+                    <h5 class="text-success">Average Monthly</h5>
+                    <h3>${{ total_income|add:"-100"|floatformat:2 }}</h3>
+                    <small class="text-muted">12-month average</small>
+                </div>
+            </div>
+            <div class="col-md-4 mb-3">
+                <div class="trend-item">
+                    <h5 class="text-info">Growth Rate</h5>
+                    <h3>+15.2%</h3>
+                    <small class="text-muted">Year over year</small>
+                </div>
+            </div>
+        </div>
+
+        <!-- Monthly Breakdown -->
+        <div class="monthly-income-breakdown mt-4">
+            <h6 class="mb-3">Recent Months Income</h6>
+            <div class="row">
+                {% for month in monthly_income|slice:":6" %}
+                <div class="col-md-2 mb-2">
+                    <div class="income-month-item">
+                        <span class="month-name">{{ month.month|slice:":3" }}</span>
+                        <span class="month-value">${{ month.total|floatformat:0 }}</span>
+                        <div class="progress" style="height: 4px;">
+                            <div class="progress-bar bg-success" style="width: {% widthratio month.total total_income 100 %}%"></div>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+
+        <!-- Income Type Breakdown -->
+        <div class="income-type-breakdown mt-4">
+            <h6 class="mb-3">Income by Type</h6>
+            <div class="row">
+                <div class="col-md-4 mb-2">
+                    <div class="type-item">
+                        <div class="d-flex justify-content-between align-items-center">
+                            <span class="type-label">
+                                <i class="fas fa-shopping-cart text-success me-2"></i>
+                                Sales
+                            </span>
+                            <span class="type-value text-success">${{ total_income|add:"-200"|floatformat:0 }}</span>
+                        </div>
+                        <div class="progress mt-2" style="height: 6px;">
+                            <div class="progress-bar bg-success" style="width: 75%"></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4 mb-2">
+                    <div class="type-item">
+                        <div class="d-flex justify-content-between align-items-center">
+                            <span class="type-label">
+                                <i class="fas fa-tools text-primary me-2"></i>
+                                Services
+                            </span>
+                            <span class="type-value text-primary">${{ total_income|add:"-500"|floatformat:0 }}</span>
+                        </div>
+                        <div class="progress mt-2" style="height: 6px;">
+                            <div class="progress-bar bg-primary" style="width: 20%"></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4 mb-2">
+                    <div class="type-item">
+                        <div class="d-flex justify-content-between align-items-center">
+                            <span class="type-label">
+                                <i class="fas fa-coins text-warning me-2"></i>
+                                Other
+                            </span>
+                            <span class="type-value text-warning">${{ total_income|add:"-700"|floatformat:0 }}</span>
+                        </div>
+                        <div class="progress mt-2" style="height: 6px;">
+                            <div class="progress-bar bg-warning" style="width: 5%"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Income Table -->
+<div class="product-section">
+    <div class="section-header">
+        <h3 class="section-title">Recent Income</h3>
+        <div class="section-actions">
+            <div class="search-box">
+                <i class="fas fa-search"></i>
+                <input type="text" placeholder="Search income...">
+            </div>
+            <select class="chart-filter">
+                <option>All Types</option>
+                <option>Sales</option>
+                <option>Services</option>
+                <option>Other</option>
+            </select>
+        </div>
+    </div>
+
+    <div class="table-responsive">
+        <table class="product-table">
+            <thead>
+                <tr>
+                    <th>Title</th>
+                    <th>Type</th>
+                    <th>Amount</th>
+                    <th>Date</th>
+                    <th>Description</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for income in incomes %}
+                <tr>
+                    <td>
+                        <div class="product-info">
+                            <div class="product-image" style="background: {% if income.income_type == 'sale' %}linear-gradient(135deg, #10b981 0%, #059669 100%){% elif income.income_type == 'service' %}linear-gradient(135deg, #3b82f6 0%, #2563eb 100%){% else %}linear-gradient(135deg, #f59e0b 0%, #d97706 100%){% endif %}; display: flex; align-items: center; justify-content: center; color: white; font-weight: bold;">
+                                {% if income.income_type == 'sale' %}<i class="fas fa-shopping-cart"></i>
+                                {% elif income.income_type == 'service' %}<i class="fas fa-tools"></i>
+                                {% else %}<i class="fas fa-coins"></i>{% endif %}
+                            </div>
+                            <div class="product-details">
+                                <h6>{{ income.title }}</h6>
+                                <p>Income #{{ income.id }}</p>
+                            </div>
+                        </div>
+                    </td>
+                    <td>
+                        <span class="badge {% if income.income_type == 'sale' %}bg-success{% elif income.income_type == 'service' %}bg-primary{% else %}bg-warning{% endif %}">
+                            {{ income.get_income_type_display }}
+                        </span>
+                    </td>
+                    <td class="text-success fw-bold">${{ income.amount }}</td>
+                    <td>{{ income.date|date:"M d, Y" }}</td>
+                    <td>{{ income.description|truncatechars:50 }}</td>
+                    <td>
+                        <div class="d-flex gap-2">
+                            <button class="btn btn-sm btn-secondary" title="View Details">
+                                <i class="fas fa-eye"></i>
+                            </button>
+                            <button class="btn btn-sm btn-primary" title="Edit">
+                                <i class="fas fa-edit"></i>
+                            </button>
+                            <button class="btn btn-sm btn-danger" title="Delete">
+                                <i class="fas fa-trash"></i>
+                            </button>
+                        </div>
+                    </td>
+                </tr>
+                {% empty %}
+                <tr>
+                    <td colspan="6" class="text-center py-4">
+                        <p class="text-muted">No income records found.</p>
+                        <button class="btn btn-primary">Add Your First Income Record</button>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_css %}
+<style>
+.income-trend-summary {
+    padding: 20px;
+}
+
+.trend-item {
+    text-align: center;
+    padding: 20px;
+    border-radius: 8px;
+    background: #f8fafc;
+    border: 1px solid #e2e8f0;
+}
+
+.trend-item h5 {
+    margin-bottom: 10px;
+    font-size: 14px;
+    font-weight: 500;
+}
+
+.trend-item h3 {
+    margin-bottom: 5px;
+    font-weight: 700;
+    color: #1e293b;
+}
+
+.monthly-income-breakdown {
+    border-top: 1px solid #e2e8f0;
+    padding-top: 20px;
+}
+
+.income-month-item {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    padding: 10px;
+    border-radius: 6px;
+    background: #f8fafc;
+    border: 1px solid #e2e8f0;
+}
+
+.month-name {
+    font-size: 12px;
+    color: #64748b;
+    font-weight: 500;
+}
+
+.month-value {
+    font-size: 14px;
+    font-weight: 600;
+    color: #1e293b;
+}
+
+.income-type-breakdown {
+    border-top: 1px solid #e2e8f0;
+    padding-top: 20px;
+}
+
+.type-item {
+    padding: 15px;
+    border-radius: 8px;
+    background: #f8fafc;
+    border: 1px solid #e2e8f0;
+}
+
+.type-label {
+    font-size: 14px;
+    color: #64748b;
+    font-weight: 500;
+}
+
+.type-value {
+    font-weight: 600;
+    font-size: 16px;
+}
+</style>
+{% endblock %}

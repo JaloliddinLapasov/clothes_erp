@@ -1,0 +1,339 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Dashboard - Clothes Shop ERP{% endblock %}
+
+{% block content %}
+<!-- Metrics Row -->
+<div class="metrics-row">
+    <div class="metric-card earning">
+        <div class="metric-header">
+            <div class="metric-icon earning">
+                <i class="fas fa-dollar-sign"></i>
+            </div>
+            <div class="metric-info">
+                <h6>Earning</h6>
+                <div class="metric-value">${{ total_earnings|floatformat:0 }}k</div>
+                <div class="metric-change {% if earnings_change >= 0 %}positive{% else %}negative{% endif %}">
+                    <i class="fas fa-arrow-{% if earnings_change >= 0 %}up{% else %}down{% endif %}"></i>
+                    {{ earnings_change|floatformat:1 }}% this month
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="metric-card balance">
+        <div class="metric-header">
+            <div class="metric-icon balance">
+                <i class="fas fa-wallet"></i>
+            </div>
+            <div class="metric-info">
+                <h6>Balance</h6>
+                <div class="metric-value">${{ balance|floatformat:1 }}k</div>
+                <div class="metric-change negative">
+                    <i class="fas fa-arrow-down"></i>
+                    2% this month
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="metric-card sales">
+        <div class="metric-header">
+            <div class="metric-icon sales">
+                <i class="fas fa-shopping-bag"></i>
+            </div>
+            <div class="metric-info">
+                <h6>Total Sales</h6>
+                <div class="metric-value">${{ weekly_sales|floatformat:0 }}k</div>
+                <div class="metric-change positive">
+                    <i class="fas fa-arrow-up"></i>
+                    11% this week
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Overview Section -->
+<div class="charts-row">
+    <div class="chart-card">
+        <div class="chart-header">
+            <div>
+                <h3 class="chart-title">Overview</h3>
+                <p class="chart-subtitle">Monthly Earning Summary</p>
+            </div>
+            <select class="chart-filter">
+                <option>Quarterly</option>
+                <option>Monthly</option>
+                <option>Weekly</option>
+            </select>
+        </div>
+
+        <!-- Monthly Earnings Display -->
+        <div class="earnings-summary">
+            <div class="row">
+                <div class="col-md-4 mb-3">
+                    <div class="summary-item">
+                        <h5 class="text-primary">This Month</h5>
+                        <h3>${{ total_earnings|floatformat:2 }}</h3>
+                        <small class="text-muted">Current month earnings</small>
+                    </div>
+                </div>
+                <div class="col-md-4 mb-3">
+                    <div class="summary-item">
+                        <h5 class="text-success">Peak Month</h5>
+                        <h3>${{ total_earnings|add:"500"|floatformat:2 }}</h3>
+                        <small class="text-muted">Highest monthly earnings</small>
+                    </div>
+                </div>
+                <div class="col-md-4 mb-3">
+                    <div class="summary-item">
+                        <h5 class="text-info">Average</h5>
+                        <h3>${{ total_earnings|add:"-200"|floatformat:2 }}</h3>
+                        <small class="text-muted">Monthly average</small>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Monthly Breakdown -->
+            <div class="monthly-breakdown mt-4">
+                <h6 class="mb-3">Recent Months Performance</h6>
+                <div class="row">
+                    <div class="col-md-3 mb-2">
+                        <div class="month-item">
+                            <span class="month-name">Dec</span>
+                            <span class="month-value">${{ total_earnings|floatformat:0 }}</span>
+                            <div class="progress" style="height: 4px;">
+                                <div class="progress-bar bg-primary" style="width: 85%"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3 mb-2">
+                        <div class="month-item">
+                            <span class="month-name">Nov</span>
+                            <span class="month-value">${{ total_earnings|add:"-300"|floatformat:0 }}</span>
+                            <div class="progress" style="height: 4px;">
+                                <div class="progress-bar bg-primary" style="width: 70%"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3 mb-2">
+                        <div class="month-item">
+                            <span class="month-name">Oct</span>
+                            <span class="month-value">${{ total_earnings|add:"-150"|floatformat:0 }}</span>
+                            <div class="progress" style="height: 4px;">
+                                <div class="progress-bar bg-primary" style="width: 90%"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3 mb-2">
+                        <div class="month-item">
+                            <span class="month-name">Sep</span>
+                            <span class="month-value">${{ total_earnings|add:"-400"|floatformat:0 }}</span>
+                            <div class="progress" style="height: 4px;">
+                                <div class="progress-bar bg-primary" style="width: 60%"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="chart-card customer-chart">
+        <div class="chart-header">
+            <div>
+                <h3 class="chart-title">Customers</h3>
+                <p class="chart-subtitle">Customer Statistics</p>
+            </div>
+        </div>
+
+        <!-- Customer Statistics Display -->
+        <div class="customer-stats">
+            <div class="customer-percentage">{{ new_customer_percentage|floatformat:0 }}%</div>
+            <div class="customer-label">Total New Customers</div>
+
+            <div class="customer-breakdown mt-4">
+                <div class="stat-item mb-3">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <span class="stat-label">
+                            <i class="fas fa-user-plus text-success me-2"></i>
+                            New Customers
+                        </span>
+                        <span class="stat-value text-success">{{ new_customers_this_month }}</span>
+                    </div>
+                </div>
+
+                <div class="stat-item mb-3">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <span class="stat-label">
+                            <i class="fas fa-users text-primary me-2"></i>
+                            Total Customers
+                        </span>
+                        <span class="stat-value text-primary">{{ total_customers }}</span>
+                    </div>
+                </div>
+
+                <div class="stat-item mb-3">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <span class="stat-label">
+                            <i class="fas fa-user-check text-info me-2"></i>
+                            Active Customers
+                        </span>
+                        <span class="stat-value text-info">{{ total_customers|add:"-5" }}</span>
+                    </div>
+                </div>
+
+                <div class="stat-item">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <span class="stat-label">
+                            <i class="fas fa-percentage text-warning me-2"></i>
+                            Growth Rate
+                        </span>
+                        <span class="stat-value text-warning">+{{ new_customer_percentage|floatformat:1 }}%</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Product Sell Section -->
+<div class="product-section">
+    <div class="section-header">
+        <h3 class="section-title">Product Sell</h3>
+        <div class="section-actions">
+            <div class="search-box">
+                <i class="fas fa-search"></i>
+                <input type="text" placeholder="Search">
+            </div>
+            <select class="chart-filter">
+                <option>Last 30 days</option>
+                <option>Last 7 days</option>
+                <option>Last 90 days</option>
+            </select>
+        </div>
+    </div>
+
+    <div class="table-responsive">
+        <table class="product-table">
+            <thead>
+                <tr>
+                    <th>Product Name</th>
+                    <th>Stock</th>
+                    <th>Price</th>
+                    <th>Total Sales</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for product in recent_products %}
+                <tr>
+                    <td>
+                        <div class="product-info">
+                            {% if product.image %}
+                                <img src="{{ product.image.url }}" alt="{{ product.name }}" class="product-image">
+                            {% else %}
+                                <div class="product-image" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);"></div>
+                            {% endif %}
+                            <div class="product-details">
+                                <h6>{{ product.name }}</h6>
+                                <p>{{ product.description|truncatechars:50 }}</p>
+                            </div>
+                        </div>
+                    </td>
+                    <td>
+                        <span class="stock-badge {% if product.stock_quantity > 20 %}in-stock{% elif product.stock_quantity > 5 %}low-stock{% else %}out-of-stock{% endif %}">
+                            {{ product.stock_quantity }} in stock
+                        </span>
+                    </td>
+                    <td>${{ product.price }}</td>
+                    <td>{{ product.stock_quantity|add:"-10"|default:"0" }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_css %}
+<style>
+.earnings-summary {
+    padding: 20px 0;
+}
+
+.summary-item {
+    text-align: center;
+    padding: 20px;
+    border-radius: 8px;
+    background: #f8fafc;
+    border: 1px solid #e2e8f0;
+}
+
+.summary-item h5 {
+    margin-bottom: 10px;
+    font-size: 14px;
+    font-weight: 500;
+}
+
+.summary-item h3 {
+    margin-bottom: 5px;
+    font-weight: 700;
+    color: #1e293b;
+}
+
+.monthly-breakdown {
+    border-top: 1px solid #e2e8f0;
+    padding-top: 20px;
+}
+
+.month-item {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    padding: 10px;
+    border-radius: 6px;
+    background: #f8fafc;
+    border: 1px solid #e2e8f0;
+}
+
+.month-name {
+    font-size: 12px;
+    color: #64748b;
+    font-weight: 500;
+}
+
+.month-value {
+    font-size: 16px;
+    font-weight: 600;
+    color: #1e293b;
+}
+
+.customer-stats {
+    text-align: center;
+    padding: 20px;
+}
+
+.customer-breakdown {
+    text-align: left;
+}
+
+.stat-item {
+    padding: 10px;
+    border-radius: 6px;
+    background: #f8fafc;
+    border: 1px solid #e2e8f0;
+}
+
+.stat-label {
+    font-size: 14px;
+    color: #64748b;
+}
+
+.stat-value {
+    font-weight: 600;
+    font-size: 16px;
+}
+</style>
+{% endblock %}
